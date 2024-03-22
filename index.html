@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Página web</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script>"http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"</script>
+    <!-- Agregar SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 </head>
 <body>
     <div class="row">
@@ -16,34 +18,52 @@
             <div class="templatemo_sub_contacttitle">COMPLETE EL SIGUIENTE FORMULARIO</div>
             <p> Fomrulario de registro:</p>
 
-            <form action="enviar.php" method="post">
+            <form id="miFormulario" action="enviar.php" method="post">
                 <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
-                <input type="email" id="email" name="email" placeholder="Emial" required>
-                <texttarea id="mensaje" name="mensaje" rows="2" required></texttarea>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <textarea id="mensaje" name="mensaje" rows="2" required></textarea> <!-- Corregir "texttarea" a "textarea" -->
                 <input type="email" id="correo_remitente" name="correo_remitente" placeholder="Enviar copia a mi correo:">
                 <div class="clear"></div>
                 <div class="col-md-8">
-                    <button type="submit" class="btn btn-primary">ENVIAR </button>
+                    <!-- Agregar un ID al botón de enviar -->
+                    <button id="btnEnviar" type="button" class="btn btn-primary">ENVIAR</button>
                 </div>
             </form>
         </div>
         <script>
             $(document).ready(function(){
-                // Función para cargar la página usando AJAX
+                // Función para mostrar SweetAlert antes de enviar el formulario
+                $("#btnEnviar").click(function(){
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: '¿Quieres enviar el formulario?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, enviar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Si el usuario confirma, enviar el formulario
+                            $("#miFormulario").submit();
+                        }
+                    });
+                });
+
+                // Función para cargar la página usando AJAX (esta función puede ser eliminada si no es necesaria)
                 function cargarPagina() {
                     $.ajax({
-                        url: window.location.href,  // URL actual de la página
+                        url: window.location.href,
                         cache: false,
                         success: function(data) {
-                            $('body').html(data);  // Reemplaza el contenido de <body> con la nueva página cargada
+                            $('body').html(data);
                         }
                     });
                 }
-    
-                // Intervalo para recargar la página cada cierto tiempo (en milisegundos)
+
                 var intervaloRecarga = 5000; // 5 segundos
                 setInterval(cargarPagina, intervaloRecarga);
             });
         </script>
+    </div>
 </body>
 </html>
