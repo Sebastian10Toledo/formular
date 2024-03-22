@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página web</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script>"http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"</script>
+</head>
+<body>
+    <div class="row">
+        <div id="templatemo_contact" class="col-md-4 gallery-contact">
+        </div>
+        <div class="col-md-8 templatemo_contactform">
+            <div class="templatemo_contacttitle">CONTACTO</div>
+            <div class="templatemo_sub_contacttitle">COMPLETE EL SIGUIENTE FORMULARIO</div>
+            <p> Fomrulario de registro:</p>
+
+            <form action="enviar.php" method="post">
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                <input type="email" id="email" name="email" placeholder="Emial" required>
+                <texttarea id="mensaje" name="mensaje" rows="2" required></texttarea>
+                <input type="email" id="correo_remitente" name="correo_remitente" placeholder="Enviar copia a mi correo:">
+                <div class="clear"></div>
+                <div class="col-md-8">
+                    <button type="submit" class="btn btn-primary">ENVIAR </button>
+                </div>
+            </form>
+        </div>
+        <script>
+            $(document).ready(function(){
+                // Función para cargar la página usando AJAX
+                function cargarPagina() {
+                    $.ajax({
+                        url: window.location.href,  // URL actual de la página
+                        cache: false,
+                        success: function(data) {
+                            $('body').html(data);  // Reemplaza el contenido de <body> con la nueva página cargada
+                        }
+                    });
+                }
+    
+                // Intervalo para recargar la página cada cierto tiempo (en milisegundos)
+                var intervaloRecarga = 5000; // 5 segundos
+                setInterval(cargarPagina, intervaloRecarga);
+            });
+        </script>
+</body>
+</html>
