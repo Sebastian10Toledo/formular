@@ -44,24 +44,30 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // Si el usuario confirma, enviar el formulario
-                            $("#miFormulario").submit();
+                            $("#miFormulario").submit(function(e) {
+                                e.preventDefault(); // Evitar el comportamiento predeterminado del envío del formulario
+                                $.ajax({
+                                    url: $(this).attr('action'),
+                                    type: $(this).attr('method'),
+                                    data: $(this).serialize(),
+                                    success: function(response) {
+                                        Swal.fire({
+                                            title: 'Enviado',
+                                            text: 'El formulario se envió correctamente.',
+                                            icon: 'success',
+                                            confirmButtonText: 'OK'
+                                        }).then(() => {
+                                            location.reload(); // Recargar la página después de que se muestre el mensaje
+                                        });
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error(xhr.responseText);
+                                    }
+                                });
+                            });
                         }
                     });
                 });
-
-                // Función para cargar la página usando AJAX (esta función puede ser eliminada si no es necesaria)
-                function cargarPagina() {
-                    $.ajax({
-                        url: window.location.href,
-                        cache: false,
-                        success: function(data) {
-                            $('body').html(data);
-                        }
-                    });
-                }
-
-                var intervaloRecarga = 5000; // 5 segundos
-                setInterval(cargarPagina, intervaloRecarga);
             });
         </script>
     </div>
